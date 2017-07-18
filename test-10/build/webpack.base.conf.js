@@ -17,7 +17,8 @@ const config = {
          * 热重载配置
          */
         app: [
-            'webpack-hot-middleware/client',
+            // 'webpack-hot-middleware/client',
+            'webpack-hot-middleware/client?reload=true',
             './src/index.js'
         ]
     },

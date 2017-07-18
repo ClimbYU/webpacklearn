@@ -12,8 +12,9 @@ const compiler = webpack(webpackConfig);
 const app = express();
 
 app.use(webpackDevMiddle(compiler, {
-    // publicPath: './',
+    publicPath: '/',
     noInfo: true,
+    hot: true,
     stats: {
         colors: true,
         chunks: false
