@@ -8,7 +8,7 @@ var compiler = webpack(config);
 
 // 初始化一个webpack-dev-server
 new webpackDevServer(compiler, {
-    publicPath: config.output.publicPath,
+    // publicPath: config.output.publicPath,
     historyApiFallback: false,
     stats: {
         colors: true
