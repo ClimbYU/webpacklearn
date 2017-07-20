@@ -5,7 +5,7 @@ const webpackDevMiddle = require('webpack-dev-middleware')
 const hotMiddleware = require('webpack-hot-middleware')
 
 
-const webpackConfig = require("./webpack.dev.conf.js");
+const webpackConfig = require("../build/webpack.dev.conf.js");
 const config = require('../config')
     // 编译
 const compiler = webpack(webpackConfig);

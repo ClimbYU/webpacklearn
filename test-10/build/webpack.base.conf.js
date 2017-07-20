@@ -19,7 +19,7 @@ const config = {
         app: [
             // 'webpack-hot-middleware/client',
             'webpack-hot-middleware/client?reload=true',
-            './src/index.js'
+            './src/main.js'
         ]
     },
     output: {
@@ -29,12 +29,12 @@ const config = {
     },
     module: {
         rules: [{
-                test: /\.js$/,
+                test: /\.js|jsx$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env']
+                        presets: ['env','react']//加入react才能使用reac相关api
                     }
                 }
             },

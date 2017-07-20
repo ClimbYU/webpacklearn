@@ -1,10 +1,18 @@
 const path = require('path')
 
-module.exports = {
+const config = {
     dev: {
         env: {
             NODE_ENV: '"development"'
         },
-        port: 3000
+        port: 3000,
+        utils_paths:{
+            
+        }
+    },
+    prod:{
+
     }
 }
+
+module.exports = config
