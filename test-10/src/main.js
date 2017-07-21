@@ -13,6 +13,7 @@ import AppContainer from './containers/AppContainer'
 
 const store = createStore(Reducer)
 const history = syncHistoryWithStore(browserHistory, store)
+//   const routes = require('./routes')
 
 ReactDOM.render (
       <Provider store={store}>

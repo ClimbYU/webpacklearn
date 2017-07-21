@@ -25,7 +25,8 @@ const config = {
     output: {
         path: OUTPUT,
         filename: '[name].[hash].js',
-        publicPath: './'
+        publicPath: './',
+        chunkFilename:'[name].js'
     },
     module: {
         rules: [{
