@@ -1,8 +1,7 @@
 import React ,{ Component } from 'react'
 import { Link } from 'react-router'
 
-
-export default class Home extends Component{
+class Recharge extends Component{
     
     constructor (props) {
         super(props)
@@ -11,10 +10,11 @@ export default class Home extends Component{
     render(){
         return (
             <div>
-                <div>Home</div>
-                <Link to = '/bless'>next</Link>
+                <div>Recharge</div>
+                <Link to = '/signCard'>next</Link>
             </div>
-            
         )
     }
 }
+
+export default Recharge

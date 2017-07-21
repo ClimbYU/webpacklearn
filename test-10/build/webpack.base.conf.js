@@ -34,7 +34,7 @@ const config = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env','react']//加入react才能使用reac相关api
+                        presets: ["env", "react", "es2015"]//加入react才能使用reac相关api
                     }
                 }
             },

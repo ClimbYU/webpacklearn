@@ -9,13 +9,14 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import Reducer from './reducer'
 import routes from './routes'
 import Home from './components/home/home'
+import AppContainer from './containers/AppContainer'
 
 const store = createStore(Reducer)
 const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDOM.render (
       <Provider store={store}>
-            <Router history={history} routes={routes} />
+            <AppContainer history={history} routes={routes} />
       </Provider>,
      document.getElementById('root')
 )
