@@ -8,14 +8,11 @@ import {
 } from 'react-router'
 
 import Home from '../components/home/home'
-const routes = () => (
-    <Route>
-       <Route path='/' component={Home} >
+const routes =
+         <Route path='/' component={Home} >
           <IndexRoute component={Home}/>
           <Route/>
           <Route/>
       </Route>
-    </Route>
-)
 
 export default routes
