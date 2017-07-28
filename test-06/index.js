@@ -5,10 +5,10 @@
 //  * b.js 被打包进 0.bundle.js.
 //  */
 
-// require('./a');
-// require.ensure([], function(require) {
-//     require('./b'); //代码保证了拆分点被创建，而且 b.js 被 webpack 分开打包。
-// });
+require('./testA');
+require.ensure([], function(require) {
+    require('./testB'); //代码保证了拆分点被创建，而且 b.js 被 webpack 分开打包。
+},'testB');  //会生成testB.js文件，但必须配置  chunkFilename:'[name].js'
 
 
 // /**

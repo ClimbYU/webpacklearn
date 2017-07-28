@@ -9,7 +9,9 @@ module.exports = function(env) {
         },
         output: {
             path: path.resolve(__dirname, './dist'),
-            filename: '[name].[hash].js'
+            filename: '[name].[hash].js',
+            // publicPath: './',
+            chunkFilename:'[name].js'
         },
         plugins: [
             /**   1.
@@ -30,12 +32,12 @@ module.exports = function(env) {
             /**
              * 3.Generating Multiple HTML Files（生成多个html文件）
              */
-            new HtmlWebpackPlugin(),
-            new HtmlWebpackPlugin({
-                title: 'My App',
-                filename: 'test.html',
-                template: 'src/test.html'
-            })
+            // new HtmlWebpackPlugin(),
+            // new HtmlWebpackPlugin({
+            //     title: 'My App',
+            //     filename: 'test.html',
+            //     template: 'src/test.html'
+            // })
         ]
     }
 }

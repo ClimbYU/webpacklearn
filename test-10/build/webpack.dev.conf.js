@@ -25,6 +25,6 @@ module.exports = merge(baseWebpackConfig, {
             template: './src/index.html'
         }),
         // 自动打开浏览器
-        new OpenBrowserPlugin({ url: 'http://localhost:3000' }),
+        new OpenBrowserPlugin({ url: 'http://localhost:8000' }),
     ]
 })

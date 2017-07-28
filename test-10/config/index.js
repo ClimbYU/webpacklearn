@@ -5,7 +5,7 @@ const config = {
         env: {
             NODE_ENV: '"development"'
         },
-        port: 3000,
+        port: 8000,
         utils_paths:{
             
         }

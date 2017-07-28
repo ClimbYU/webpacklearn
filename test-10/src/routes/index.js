@@ -10,62 +10,56 @@ import {
 import Home from '../components/home/home'
 // import Bless from '../components/bless/bless'
 const Bless = (location,cb) => {
-    require([],require => {
+    require.ensure([],require => {
       /**
        * webpack支持es6，所以要用默认写法 require('../components/bless/bless').default 
        * 必须配合 getComponent 使用才可以使用 cb(null,Bless)
        */
-
-      const Bless = require('../components/bless/bless').default
-      cb(null,Bless)
-    })
+      cb(null,require('../components/bless/bless').default)
+    },'bless')
 };
 
 // import Exchange from '../components/exchange/exchange'  
 const Exchange = (location,cb) => {
-    require([],require => {
+    require.ensure([],require => {
        /**
        * webpack支持es6，所以要用默认写法 require('../components/bless/bless').default 
        * 必须配合 getComponent 使用才可以使用 cb(null,Bless)
        */
-      const Exchange = require('../components/exchange/exchange').default
-      cb(null,Exchange)
-    })
+      cb(null, require('../components/exchange/exchange').default)
+    },'exchange')
 };
 
 // import Recharge from '../components/recharge/recharge'
 const Recharge = (location,cb) => {
-    require([],require => {
+    require.ensure([],require => {
        /**
        * webpack支持es6，所以要用默认写法 require('../components/bless/bless').default 
        * 必须配合 getComponent 使用才可以使用 cb(null,Bless)
        */
-      const Recharge = require('../components/recharge/recharge').default
-      cb(null,Recharge)
-    })
+      cb(null,require('../components/recharge/recharge').default)
+    },'recharge')
 };
 
 // import SignCard from '../components/signCard/signCard'
 const SignCard = (location,cb) => {
-    require([],require => {
+    require.ensure([],require => {
        /**
        * webpack支持es6，所以要用默认写法 require('../components/bless/bless').default 
        * 必须配合 getComponent 使用才可以使用 cb(null,Bless)
        */
-      const SignCard = require('../components/signCard/signCard').default
-      cb(null,SignCard)
-    })
+      cb(null,require('../components/signCard/signCard').default)
+    },'signCard')
 };
 // import User from '../components/user/user'
 const User = (location,cb) => {
-    require([],require => {
+    require.ensure([],require => {
        /**
        * webpack支持es6，所以要用默认写法 require('../components/bless/bless').default 
        * 必须配合 getComponent 使用才可以使用 cb(null,Bless)
        */
-      const User = require('../components/user/user').default
-      cb(null,User)
-    })
+      cb(null, require('../components/user/user').default)
+    },'user')
 };
 
 const routes =

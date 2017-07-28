@@ -4,15 +4,17 @@ import {
 
 
 const initialState = {
-    name:'慢慢来哈',
-    cardPhone:'13800138000'
+    name:'',
+    cardPhone:''
 }
 
 
 const customerInfo = (state = initialState , actions) => {
     switch(actions.type){
         case SHOW_QUOTA :
-            return actions.quotaInfo
+            return Object.assign({}, state, {
+                userName: payload
+            });
         default :
             return state
     }
