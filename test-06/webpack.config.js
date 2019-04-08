@@ -2,7 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = function(env) {
+module.exports = function (env) {
     return {
         entry: {
             main: './index.js'
@@ -11,7 +11,7 @@ module.exports = function(env) {
             path: path.resolve(__dirname, './dist'),
             filename: '[name].[hash].js',
             // publicPath: './',
-            chunkFilename:'[name].js'
+            chunkFilename: '[name].js'
         },
         plugins: [
             /**   1.
