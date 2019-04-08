@@ -1,7 +1,6 @@
-var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path')
-
+var MyPlugin = require('./myPlugin')
 
 module.exports = {
     mode: 'development',
@@ -22,6 +21,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin()
+        new HtmlWebpackPlugin(),
+        new MyPlugin({ options: true })
     ]
 }
