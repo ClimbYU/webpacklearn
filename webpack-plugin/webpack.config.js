@@ -1,4 +1,5 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var webpack = require("webpack")
 var path = require('path')
 var MyPlugin = require('./myPlugin')
 
@@ -21,6 +22,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.SourceMapDevToolPlugin(),
         new HtmlWebpackPlugin(),
         new MyPlugin({ options: true })
     ]
