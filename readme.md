@@ -1,4 +1,4 @@
-## 关于webpack插件的使用见Issues
+## 关于webpack插件的使用见Issues(https://github.com/ClimbYU/webpacklearn/issues)
 
 ## 参考链接
 ### [核心模块 tapable 解析](https://www.jianshu.com/p/273e1c9904d2)
