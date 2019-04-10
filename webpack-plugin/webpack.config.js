@@ -1,4 +1,6 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var WebpackManifestPlugin = require("webpack-manifest-plugin")
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 var webpack = require("webpack")
 var path = require('path')
 var MyPlugin = require('./myPlugin')
@@ -9,7 +11,7 @@ module.exports = {
         index: './index.js'
     },
     output: {
-        filename: '[name].js',
+        filename: '[name].[hash:5].js',
         path: path.resolve(__dirname, 'dist'),
         publicPath: ''
     },
@@ -23,6 +25,8 @@ module.exports = {
     },
     plugins: [
         new webpack.SourceMapDevToolPlugin(),
+        new WebpackManifestPlugin(),
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin(),
         new MyPlugin({ options: true })
     ]
