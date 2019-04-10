@@ -1,6 +1,2 @@
-
-let obj = {
-    name: 'zhang',
-    age: 23
-}
-console.log(obj.name)
+import {Home} from './home'
+console.log(Home.name)

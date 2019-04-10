@@ -5,6 +5,11 @@ var express = require('express')
 
 let compiler = webpack(config)
 
+compiler.hooks.webpackManifestPluginAfterEmit.tap("webpackManifestPluginAfterEmit",(manifest) => {
+
+    console.log('manifest',manifest)
+})
+
 const app = express()
 
 app.use(webpackDevMiddleware(compiler, {
