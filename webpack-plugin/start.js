@@ -1,5 +1,12 @@
-console.log("erty2345")
-const spawn = require('cross-spawn');
+var webpack = require("webpack")
+var config = require('./webpack.config.js')
+var webpackDevMiddleware = require('webpack-dev-middleware')
+var express = require('express')
 
+let compiler = webpack(config)
 
-spawn('webpack', { stdio: 'inherit' });
+const app = express()
+
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: ''
+}));

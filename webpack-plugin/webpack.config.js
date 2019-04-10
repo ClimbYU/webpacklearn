@@ -7,13 +7,15 @@ var MyPlugin = require('./myPlugin')
 
 module.exports = {
     mode: 'development',
+    devtool: 'source-map',
     entry: {
         index: './index.js'
     },
     output: {
         filename: '[name].[hash:5].js',
         path: path.resolve(__dirname, 'dist'),
-        publicPath: ''
+        publicPath: '',
+        devtoolModuleFilenameTemplate: '../[resource-path]'
     },
     module: {
         rules: [
@@ -28,6 +30,6 @@ module.exports = {
         new WebpackManifestPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin(),
-        new MyPlugin({ options: true })
+        // new MyPlugin({ options: true })
     ]
 }

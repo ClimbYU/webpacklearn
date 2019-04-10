@@ -13,9 +13,11 @@
   "devDependencies": {
     "clean-webpack-plugin": "^2.0.1",
     "cross-spawn": "^6.0.5",
+    "express": "^4.16.4",
     "tapable": "^2.0.0-beta.3",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
+    "webpack-dev-middleware": "^3.6.2",
     "webpack-dev-server": "^3.3.0",
     "webpack-manifest-plugin": "^2.0.4"
   },
