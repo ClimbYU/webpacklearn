@@ -5,3 +5,4 @@
 ### [compiler & compilation 对象](https://zoumiaojiang.com/article/what-is-real-webpack-plugin/)
 ### [官方文档](https://webpack.js.org/api/compiler-hooks/)
 ### [怎样写一个插件](https://github.com/lcxfs1991/blog/issues/1)
+[仿照webpack-manifest-plugin插件实现](https://github.com/ClimbYU/webpacklearn/blob/master/webpack-plugin/myPlugin.js)
