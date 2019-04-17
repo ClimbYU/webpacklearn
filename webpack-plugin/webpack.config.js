@@ -27,9 +27,9 @@ module.exports = {
     },
     plugins: [
         new webpack.SourceMapDevToolPlugin(),
-        // new WebpackManifestPlugin(),
+        new WebpackManifestPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin(),
-        new MyPlugin({ options: true })
+        // new MyPlugin({ options: true })
     ]
 }

@@ -1,36 +1,26 @@
 const {
     SyncHook,
-    AsyncParallelHook
+    AsyncSeriesHook
 } = require('tapable');
 
 class Compiler {
     constructor(options) {
         this.hooks = {
-            accelerate: new SyncHook(["newSpeed"]),
-            break: new SyncHook(),
-            calculateRoutes: new AsyncParallelHook(["source", "target", "routesList"])
+            run: new SyncHook(["newSpeed"]),
+            emit: new AsyncSeriesHook(["compilation"])
         };
         let plugins = options.plugins;
         if (plugins && plugins.length > 0) {
             plugins.forEach(plugin => plugin.apply(this));
         }
     }
-    run() {
-        console.time('cost');
-        this.accelerate('hello')
-        this.break()
-        this.calculateRoutes('i', 'like', 'tapable')
+    run(param) {
+        this.hooks.run.call(param);
     }
-    accelerate(param) {
-        this.hooks.accelerate.call(param);
-    }
-    break() {
-        this.hooks.break.call();
-    }
-    calculateRoutes() {
+    emit() {
         const args = Array.from(arguments)
-        this.hooks.calculateRoutes.callAsync(...args, err => {
-            console.timeEnd('cost');
+        console.log('args', args)
+        this.hooks.emit.callAsync(...args, err => {
             if (err) console.log(err)
         });
     }
@@ -42,14 +32,14 @@ class MyPlugin {
     constructor() {
 
     }
-    apply(conpiler) {//接受 compiler参数
-        conpiler.hooks.break.tap("WarningLampPlugin", () => console.log('WarningLampPlugin'));
-        conpiler.hooks.accelerate.tap("LoggerPlugin", newSpeed => console.log(`Accelerating to ${newSpeed}`));
-        conpiler.hooks.calculateRoutes.tapAsync("calculateRoutes tapAsync", (source, target, routesList, callback) => {
+    apply(compiler) {//接受 compiler参数
+        compiler.hooks.run.tap("run", () => console.log('run'));
+        compiler.hooks.emit.tapAsync("emit tapAsync", (callback) => {
             setTimeout(() => {
-                console.log(`tapAsync to ${source}${target}${routesList}`)
+                console.timeEnd('cost');
+                console.log('emit tapAsync')
                 callback();
-            }, 500)
+            }, 1000)
         });
     }
 }
@@ -65,4 +55,6 @@ const options = {
 }
 let compiler = new Compiler(options)
 compiler.run()
+console.time('cost');
+compiler.emit()
 
