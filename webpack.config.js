@@ -1,4 +1,5 @@
 var path = require("path")
+const glob = require('glob')
 var webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -6,16 +7,50 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var MiniCssExtractPlugin = require("mini-css-extract-plugin")
 var OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 
+const setMPA = () => {
+    const entries = {}
+    const htmlWebpackPlugins = []
+
+    const entriesFiles = glob.sync(path.resolve(__dirname, './src/*/index.js'))
+
+    Object.keys(entriesFiles)
+        .map((index) => {
+            const entryFile = entriesFiles[index]
+            const match = entryFile.match(/src\/(.*)\/index\.js/)
+            const pageName = match && match[1];
+            entries[pageName] = entryFile
+
+            htmlWebpackPlugins.push(
+                new HtmlWebpackPlugin({
+                    template: path.join(__dirname, `src/${pageName}/index.html`),
+                    filename: `${pageName}.html`,
+                    inject: true,
+                    minify: {
+                        html5: true,
+                        collapseWhitespace: true,
+                        preserveLineBreaks: false,
+                        minifyCSS: true,
+                        minifyJS: true,
+                        removeComments: false
+                    }
+                })
+            )
+        })
+
+    return {
+        entries,
+        htmlWebpackPlugins
+    }
+}
+const { entries, htmlWebpackPlugins } = setMPA();
+console.log(entries, htmlWebpackPlugins)
+
 module.exports = {
-    entry: './src/index',
+    entry: entries,
     output: {
         path: path.join(__dirname, 'dist'),
         filename: '[name]_[chunkhash:8].js'
     },
-    // watch: true,
-    // watchOptions: {
-
-    // },
     mode: 'production',
     module: {
         rules: [
@@ -81,20 +116,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'src/index.html'),
-            filename: 'index.html',
-            // chunks: ['main'], // 可以指定使用哪些chunk
-            inject: true,
-            minify: {
-                html5: true,
-                collapseWhitespace: true,
-                preserveLineBreaks: false,
-                minifyCSS: true,
-                minifyJS: true,
-                removeComments: false
-            }
-        }),
         new VueLoaderPlugin(), // vue加载需要此插件
         new CleanWebpackPlugin(), // 删除dist
         new MiniCssExtractPlugin({ // 提取css为单独文件
@@ -104,5 +125,5 @@ module.exports = {
             assetNameRegExp: /\.css$/g,
             cssProcessor: require('cssnano') // 使用cssnano压缩
         })
-    ]
+    ].concat(htmlWebpackPlugins)
 }
