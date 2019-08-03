@@ -41,6 +41,9 @@ export default {
     return {
       name: "Vue"
     };
+  },
+  mounted() {
+    console.log(2345678);
   }
 };
 </script>

@@ -13,6 +13,7 @@ const setMPA = () => {
 
     const entriesFiles = glob.sync(path.resolve(__dirname, './src/*/index.js'))
 
+
     Object.keys(entriesFiles)
         .map((index) => {
             const entryFile = entriesFiles[index]
@@ -43,7 +44,6 @@ const setMPA = () => {
     }
 }
 const { entries, htmlWebpackPlugins } = setMPA();
-console.log(entries, htmlWebpackPlugins)
 
 module.exports = {
     entry: entries,
