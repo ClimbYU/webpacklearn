@@ -6,6 +6,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var MiniCssExtractPlugin = require("mini-css-extract-plugin")
 var OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+// var HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin")
+// const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin');
+
 
 const setMPA = () => {
     const entries = {}
@@ -25,6 +28,7 @@ const setMPA = () => {
                 new HtmlWebpackPlugin({
                     template: path.join(__dirname, `src/${pageName}/index.html`),
                     filename: `${pageName}.html`,
+                    chunks: ['commons', pageName],
                     inject: true,
                     minify: {
                         html5: true,
@@ -52,6 +56,21 @@ module.exports = {
         filename: '[name]_[chunkhash:8].js'
     },
     mode: 'production',
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    // test: /vue/,
+                    // name: 'vendors',
+                    // chunks: 'all'
+                    minSize: 1024 * 100,
+                    chunks: 'all',
+                    name: 'commons',
+                    minChunks: 2//至少引用两次
+                }
+            }
+        }
+    },
     module: {
         rules: [
             {
@@ -124,6 +143,16 @@ module.exports = {
         new OptimizeCssAssetsWebpackPlugin({ // 压缩css
             assetNameRegExp: /\.css$/g,
             cssProcessor: require('cssnano') // 使用cssnano压缩
-        })
+        }),
+        // new ModuleConcatenationPlugin(),
+        // new HtmlWebpackExternalsPlugin({
+        //     externals: [
+        //         {
+        //             module: 'vue',
+        //             entry: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js',
+        //             global: 'Vue',
+        //         },
+        //     ],
+        // })
     ].concat(htmlWebpackPlugins)
 }

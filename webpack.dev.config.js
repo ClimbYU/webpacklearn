@@ -6,7 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
-
+// var HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 
 const setMPA = () => {
     const entries = {}
@@ -27,11 +27,11 @@ const setMPA = () => {
                     inject: true,
                     minify: {
                         html5: true,
-                        // collapseWhitespace: true,
-                        // preserveLineBreaks: false,
-                        // minifyCSS: true,
-                        // minifyJS: true,
-                        // removeComments: false
+                        collapseWhitespace: true,
+                        preserveLineBreaks: false,
+                        minifyCSS: true,
+                        minifyJS: true,
+                        removeComments: false
                     }
                 })
             )
@@ -52,6 +52,9 @@ module.exports = {
     },
     mode: 'development',
     devtool: 'source-map',
+    optimization: {
+
+    },
     module: {
         rules: [
             {
@@ -99,7 +102,16 @@ module.exports = {
             assetNameRegExp: /\.css$/g,
             cssProcessor: require('cssnano') // 使用cssnano压缩
         }),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        // new HtmlWebpackExternalsPlugin({
+        //     externals: [
+        //         {
+        //             module: 'vue',
+        //             entry: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js',
+        //             global: 'Vue',
+        //         },
+        //     ],
+        // })
     ].concat(htmlWebpackPlugins),
     devServer: {
         contentBase: './dist',

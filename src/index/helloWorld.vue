@@ -2,7 +2,8 @@
   <div id="root" class="container-content">
     Hello {{name}}
     <div class="image"></div>
-    <div class="box"></div>
+    <div class="box" @click="importComponent"></div>
+    {{home}}
   </div>
 </template>
 
@@ -15,7 +16,7 @@
     display: flex;
     color: #1717cf;
     font-size: 30px;
-    font-family: "SourceHanSerifSC-Heavy";
+    // font-family: "SourceHanSerifSC-Heavy";
     .image {
       background-image: url(./assets/images/timg.jpg);
       background-repeat: no-repeat;
@@ -35,15 +36,28 @@
 
 <script>
 import "./assets/css/index.css";
+import { formate, getData } from "../utils/utils.js";
+// import Home from "./home.vue";
 export default {
   name: "Hello",
+  // components: [Home],
   data() {
     return {
-      name: "Vue"
+      name: "Vue",
+      home: ""
     };
   },
+  methods: {
+    importComponent() {
+      import("./home.vue").then(home => {
+        console.log(home);
+        this.home = home.default;
+      });
+    }
+  },
   mounted() {
-    console.log(2345678);
+    getData();
+    formate();
   }
 };
 </script>

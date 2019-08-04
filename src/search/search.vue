@@ -6,12 +6,16 @@
 </style>
 
 <script>
+import { formate } from "../utils/utils.js";
 export default {
   name: "Search",
   data() {
     return {
       name: "Vue"
     };
+  },
+  mounted() {
+    formate();
   }
 };
 </script>
