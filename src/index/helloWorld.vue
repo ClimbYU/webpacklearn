@@ -37,7 +37,7 @@
 <script>
 import "./assets/css/index.css";
 import { formate, getData } from "../utils/utils.js";
-// import Home from "./home.vue";
+import Home from "./home.vue";
 export default {
   name: "Hello",
   // components: [Home],
