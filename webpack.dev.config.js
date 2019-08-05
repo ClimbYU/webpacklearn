@@ -7,6 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 // var HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 const setMPA = () => {
     const entries = {}
@@ -55,6 +56,7 @@ module.exports = {
     optimization: {
 
     },
+    stats: 'errors-only', // 减少控制台日志输出
     module: {
         rules: [
             {
@@ -103,15 +105,7 @@ module.exports = {
             cssProcessor: require('cssnano') // 使用cssnano压缩
         }),
         new webpack.HotModuleReplacementPlugin(),
-        // new HtmlWebpackExternalsPlugin({
-        //     externals: [
-        //         {
-        //             module: 'vue',
-        //             entry: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js',
-        //             global: 'Vue',
-        //         },
-        //     ],
-        // })
+        new FriendlyErrorsWebpackPlugin()
     ].concat(htmlWebpackPlugins),
     devServer: {
         contentBase: './dist',

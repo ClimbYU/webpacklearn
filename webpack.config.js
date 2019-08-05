@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var MiniCssExtractPlugin = require("mini-css-extract-plugin")
 var OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 // var HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin")
 // const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin');
 
@@ -71,6 +72,7 @@ module.exports = {
             }
         }
     },
+    stats: 'errors-only',// 减少控制台日志输出
     module: {
         rules: [
             {
@@ -146,15 +148,6 @@ module.exports = {
             assetNameRegExp: /\.css$/g,
             cssProcessor: require('cssnano') // 使用cssnano压缩
         }),
-        // new ModuleConcatenationPlugin(),
-        // new HtmlWebpackExternalsPlugin({
-        //     externals: [
-        //         {
-        //             module: 'vue',
-        //             entry: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js',
-        //             global: 'Vue',
-        //         },
-        //     ],
-        // })
+        new FriendlyErrorsWebpackPlugin()
     ].concat(htmlWebpackPlugins)
 }
