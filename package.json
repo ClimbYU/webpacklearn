@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch",
     "build": "webpack --config webpack.config.js",
+    "build:stats": "webpack --config webpack.config.js --json > stats.json",
     "dev": "webpack-dev-server --config webpack.dev.config.js --open"
   },
   "repository": {
