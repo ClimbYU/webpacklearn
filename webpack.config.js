@@ -9,7 +9,12 @@ var OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 // var HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin")
 // const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin');
+const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')// 速度分析
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 包体积图
+const HappyPack = require('happypack') // 开启多线程打包
+const TerserPlugin = require('terser-webpack-plugin')
 
+const swmp = new SpeedMeasureWebpackPlugin()
 
 const setMPA = () => {
     const entries = {}
@@ -50,7 +55,7 @@ const setMPA = () => {
 }
 const { entries, htmlWebpackPlugins } = setMPA();
 
-module.exports = {
+module.exports = swmp.wrap({
     entry: entries,
     output: {
         path: path.join(__dirname, 'dist'),
@@ -70,15 +75,28 @@ module.exports = {
                     minChunks: 2//至少引用两次
                 }
             }
-        }
+        },
+        // minimizer: [
+        //     new TerserPlugin({
+        //         parallel: 4
+        //     })
+        // ]
     },
-    stats: 'errors-only',// 减少控制台日志输出
+    // stats: 'errors-only',// 减少控制台日志输出
     module: {
         rules: [
             {
                 test: /\.js$/,
-                use: ['babel-loader',
-                    'eslint-loader'
+                use: [
+                    {
+                        loader: 'thread-loader',
+                        options: {
+                            workers: 3
+                        }
+                    },
+                    'babel-loader',
+                    // 'eslint-loader'
+                    // 'happypack/loader'
                 ]
             },
             {
@@ -148,6 +166,11 @@ module.exports = {
             assetNameRegExp: /\.css$/g,
             cssProcessor: require('cssnano') // 使用cssnano压缩
         }),
-        new FriendlyErrorsWebpackPlugin()
+        new FriendlyErrorsWebpackPlugin(),
+        // new BundleAnalyzerPlugin(),
+        // new HappyPack({
+        //     // 3) re-add the loaders you replaced above in #1:
+        //     loaders: ['babel-loader']
+        // })
     ].concat(htmlWebpackPlugins)
-}
+})
