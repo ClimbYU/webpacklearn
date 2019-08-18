@@ -143,14 +143,29 @@ module.exports = swmp.wrap({
             {
                 test: /.(png|jpg|gif|jpeg)$/,
                 use: [
+                    'file-loader',
                     {
-                        // loader: 'url-loader',
-                        // options: {
-                        //     limit: 10240
-                        // }
-                        loader: 'file-loader',
+                        loader: 'image-webpack-loader',
                         options: {
-                            name: '[name]_[hash:8].[ext]'
+                            mozjpeg: {
+                                progressive: true,
+                                quality: 65
+                            },
+                            // optipng.enabled: false will disable optipng
+                            optipng: {
+                                enabled: false,
+                            },
+                            pngquant: {
+                                quality: '65-90',
+                                speed: 4
+                            },
+                            gifsicle: {
+                                interlaced: false,
+                            },
+                            // the webp option will enable WEBP
+                            webp: {
+                                quality: 75
+                            }
                         }
                     }
                 ]

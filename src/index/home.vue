@@ -3,6 +3,7 @@
     Hello {{name}}
     <div class="image"></div>
     <div class="box"></div>
+    <img src="./assets/images/image.jpg"/>
   </div>
 </template>
 
