@@ -84,11 +84,21 @@ module.exports = swmp.wrap({
             })
         ]
     },
+    resolve: {
+        alias: {
+            'vue': path.resolve(__dirname, './node_modules/vue/dist/vue.min.js')
+        },
+        extensions: ['.js'],
+        mainFields: ['main']
+
+    },
     // stats: 'errors-only',// 减少控制台日志输出
     module: {
         rules: [
             {
                 test: /\.js$/,
+                include: path.resolve('src'),
+                exclude: /node_modules/,
                 use: [
                     {
                         loader: 'thread-loader',
