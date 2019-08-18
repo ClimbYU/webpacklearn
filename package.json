@@ -8,7 +8,8 @@
     "watch": "webpack --watch",
     "build": "webpack --config webpack.config.js",
     "build:stats": "webpack --config webpack.config.js --json > stats.json",
-    "dev": "webpack-dev-server --config webpack.dev.config.js --open"
+    "dev": "webpack-dev-server --config webpack.dev.config.js --open",
+    "dll": "webpack --config webpack.dll.js"
   },
   "repository": {
     "type": "git",

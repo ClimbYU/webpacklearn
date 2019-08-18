@@ -62,26 +62,26 @@ module.exports = swmp.wrap({
         filename: '[name]_[chunkhash:8].js'
     },
     mode: 'production',
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    // test: /vue/,
-                    // name: 'vendors',
-                    // chunks: 'all'
-                    minSize: 1024 * 100,
-                    chunks: 'all',
-                    name: 'commons',
-                    minChunks: 2//至少引用两次
-                }
-            }
-        },
-        // minimizer: [
-        //     new TerserPlugin({
-        //         parallel: 4
-        //     })
-        // ]
-    },
+    // optimization: {
+    //     splitChunks: {
+    //         cacheGroups: {
+    //             commons: {
+    //                 // test: /vue/,
+    //                 // name: 'vendors',
+    //                 // chunks: 'all'
+    //                 minSize: 1024 * 100,
+    //                 chunks: 'all',
+    //                 name: 'commons',
+    //                 minChunks: 2//至少引用两次
+    //             }
+    //         }
+    //     },
+    //     // minimizer: [
+    //     //     new TerserPlugin({
+    //     //         parallel: 4
+    //     //     })
+    //     // ]
+    // },
     // stats: 'errors-only',// 减少控制台日志输出
     module: {
         rules: [
@@ -172,5 +172,8 @@ module.exports = swmp.wrap({
         //     // 3) re-add the loaders you replaced above in #1:
         //     loaders: ['babel-loader']
         // })
+        new webpack.DllReferencePlugin({
+            manifest: require('./build/library/library.json')
+        })
     ].concat(htmlWebpackPlugins)
 })
