@@ -12,7 +12,8 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')// 速度分析
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 包体积图
 const HappyPack = require('happypack') // 开启多线程打包
-const TerserPlugin = require('terser-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin') // 提升打包速度
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin') // 开启缓存提升打包速度
 
 const swmp = new SpeedMeasureWebpackPlugin()
 
@@ -62,26 +63,27 @@ module.exports = swmp.wrap({
         filename: '[name]_[chunkhash:8].js'
     },
     mode: 'production',
-    // optimization: {
-    //     splitChunks: {
-    //         cacheGroups: {
-    //             commons: {
-    //                 // test: /vue/,
-    //                 // name: 'vendors',
-    //                 // chunks: 'all'
-    //                 minSize: 1024 * 100,
-    //                 chunks: 'all',
-    //                 name: 'commons',
-    //                 minChunks: 2//至少引用两次
-    //             }
-    //         }
-    //     },
-    //     // minimizer: [
-    //     //     new TerserPlugin({
-    //     //         parallel: 4
-    //     //     })
-    //     // ]
-    // },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    // test: /vue/,
+                    // name: 'vendors',
+                    // chunks: 'all'
+                    minSize: 1024 * 100,
+                    chunks: 'all',
+                    name: 'commons',
+                    minChunks: 2//至少引用两次
+                }
+            }
+        },
+        minimizer: [
+            new TerserPlugin({
+                parallel: 4,
+                cache: true // 开启缓存提升打包速度
+            })
+        ]
+    },
     // stats: 'errors-only',// 减少控制台日志输出
     module: {
         rules: [
@@ -94,7 +96,7 @@ module.exports = swmp.wrap({
                             workers: 3
                         }
                     },
-                    'babel-loader',
+                    'babel-loader?cacheDirectory=true', // 开启缓存
                     // 'eslint-loader'
                     // 'happypack/loader'
                 ]
@@ -167,13 +169,14 @@ module.exports = swmp.wrap({
             cssProcessor: require('cssnano') // 使用cssnano压缩
         }),
         new FriendlyErrorsWebpackPlugin(),
+        new HardSourceWebpackPlugin()
         // new BundleAnalyzerPlugin(),
         // new HappyPack({
         //     // 3) re-add the loaders you replaced above in #1:
         //     loaders: ['babel-loader']
         // })
-        new webpack.DllReferencePlugin({
-            manifest: require('./build/library/library.json')
-        })
+        // new webpack.DllReferencePlugin({
+        //     manifest: require('./build/library/library.json')
+        // })
     ].concat(htmlWebpackPlugins)
 })
