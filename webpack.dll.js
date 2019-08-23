@@ -19,7 +19,7 @@ module.exports = {
             name: '[name]_dll', // 生成的.json文件的模块名称
             path: path.resolve(__dirname, 'build/library/[name].json')
         }),
-        new DllManifestList()
+        new DllManifestList() // 生成dll文件对应的json文件用于插入html使用
     ]
 }
 
