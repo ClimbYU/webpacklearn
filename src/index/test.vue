@@ -3,7 +3,7 @@
     Hello {{name}}
     <div class="image"></div>
     <div class="box" @click="importComponent"></div>
-    <Home></Home>
+    <Home/>
   </div>
 </template>
 
@@ -40,7 +40,7 @@ import { formate, getData } from "../utils/utils.js";
 import Home from "./home.vue";
 export default {
   name: "Hello",
-  components: { Home },
+  // components: [Home],
   data() {
     return {
       name: "Vue",
