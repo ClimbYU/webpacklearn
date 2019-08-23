@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const { DllManifestList } = require('./plugins/index')
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: {
         library: [
             'vue'

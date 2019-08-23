@@ -1,7 +1,6 @@
 const fs = require('fs')
 const cwd = process.cwd()
-const manifestList = require(`${cwd}/build/manifest.list.json`)
-console.log(manifestList)
+
 class DllManifestList {
     apply (compiler) {
         compiler.plugin('emit', function (compilation, next) {
@@ -10,6 +9,7 @@ class DllManifestList {
             assets.forEach(item => {
                 assetsList[item.replace(/\..*$/g, '')] = item
             })
+            console.log(assetsList)
             fs.writeFile('./build/manifest.list.json', JSON.stringify(assetsList), (error) => {
                 if (error) {
                     console.log(error)
@@ -22,6 +22,7 @@ class DllManifestList {
 class DllManifestScript {
     apply (compiler) {
         compiler.plugin('emit', function (compilation, next) {
+            const manifestList = require(`${cwd}/build/manifest.list.json`)
             for (const [key, value] of Object.entries(compilation.assets)) {
                 if (/\.html/.test(key)) {
                     const data = value.source()
@@ -40,6 +41,7 @@ class DllManifestScriptCopy {
     apply (compiler) {
         compiler.plugin('done', function (compilation) {
             const { outputPath } = compiler
+            const manifestList = require(`${cwd}/build/manifest.list.json`)
             for (const [key, file] of Object.entries(manifestList)) {
                 fs.copyFile(`${cwd}/build/library/${file}`, `${outputPath}/${file}`, error => {
                     if (error) {
