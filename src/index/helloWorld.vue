@@ -1,9 +1,18 @@
 <template>
   <div id="root" class="container-content">
-    Hello {{name}}
+    <!-- Hello {{name}}
     <div class="image"></div>
-    <div class="box" @click="importComponent"></div>
-    <Home></Home>
+    <div class="box" @click="importComponent"></div>-->
+    <Test
+      :label="pChild1"
+      :child2="pChild2"
+      :input-value="value"
+      @focus="handleFocus"
+      @blur="handleBlur"
+      @input="handleInput"
+      @click="handleClick"
+    />
+    <!-- <Home></Home> -->
   </div>
 </template>
 
@@ -38,13 +47,17 @@
 import "./assets/css/index.css";
 import { formate, getData } from "../utils/utils.js";
 import Home from "./home.vue";
+import Test from "./components/test/index.vue";
 export default {
   name: "Hello",
-  components: { Home },
+  components: { Home, Test },
   data() {
     return {
       name: "Vue",
-      home: ""
+      home: "",
+      pChild1: "传递给子组件的属性",
+      pChild2: "未被继承的属性",
+      value: "test"
     };
   },
   methods: {
@@ -53,6 +66,18 @@ export default {
         console.log(home);
         this.home = home.default;
       });
+    },
+    handleFocus(e) {
+      console.log("handleFocus", e);
+    },
+    handleBlur(e) {
+      console.log("handleBlur", e);
+    },
+    handleInput(e) {
+      console.log("handleInput", e);
+    },
+    handleClick(e) {
+      console.log("handleClick", e);
     }
   },
   mounted() {
