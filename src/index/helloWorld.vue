@@ -11,7 +11,20 @@
       @blur="handleBlur"
       @input="handleInput"
       @click="handleClick"
-    />
+    >
+      <template slot="test1" slot-scope="scope">
+        <div>{{scope.user.name}}</div>
+      </template>
+      <template v-slot:test2="scope">
+        <div>{{scope.message.age}}</div>
+      </template>
+      <template #test3="{other}">
+        <div>{{other.date}}</div>
+      </template>
+      <template slot="slot1">
+        <div>slot1</div>
+      </template>
+    </Test>
     <!-- <Home></Home> -->
   </div>
 </template>

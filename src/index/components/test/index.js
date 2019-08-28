@@ -1,6 +1,27 @@
 export default {
     data () {
-        return {}
+        return {
+            user: {
+                name: 'zhang'
+            },
+            message: {
+                age: 11
+            },
+            other: {
+                date: '2019-12-01'
+            },
+            dataList: [
+                {
+                    name: 'slot1',
+                    age: 12
+                },
+                {
+                    name: 'slot2',
+                    age: 13
+                }
+            ]
+
+        }
     },
     props: {
         label: {
