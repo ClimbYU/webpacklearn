@@ -14,6 +14,11 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const HappyPack = require('happypack') // 开启多线程打包
 const TerserPlugin = require('terser-webpack-plugin') // 提升打包速度
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin') // 开启缓存提升打包速度
+const PurgecssPlugin = require('purgecss-webpack-plugin')
+
+const PATHS = {
+    src: path.resolve(__dirname, 'src')
+}
 
 const swmp = new SpeedMeasureWebpackPlugin()
 
@@ -194,7 +199,10 @@ module.exports = swmp.wrap({
             cssProcessor: require('cssnano') // 使用cssnano压缩
         }),
         new FriendlyErrorsWebpackPlugin(),
-        new HardSourceWebpackPlugin()
+        new HardSourceWebpackPlugin(),
+        new PurgecssPlugin({ // 去除无用css
+            paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
+        }),
         // new BundleAnalyzerPlugin(),
         // new HappyPack({
         //     // 3) re-add the loaders you replaced above in #1:
