@@ -61,7 +61,8 @@ module.exports = {
     entry: entries,
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: '[name]_[chunkhash:8].js'
+        filename: 'static/js/[name]_[chunkhash:8].js',
+        publicPath: ''
     },
     mode: 'production',
     optimization: {
@@ -72,20 +73,20 @@ module.exports = {
                     // test: /vue/,
                     // name: 'vendors',
                     // chunks: 'all'
-                    test: /node_modules/,
-                    minSize: 1024 * 100,
+                    // test: /node_modules/,
+                    minSize: 1024 * 10,
                     chunks: 'all',
-                    name: 'vendors',
+                    name: 'common',
                     priority: -10,
                     minChunks: 2// 至少引用两次
                 },
-                default: { // 提取业务公公代码
-                    chunks: 'initial',
-                    minChunks: 2,
-                    priority: -20,
-                    minSize: 30,
-                    name: 'common'
-                }
+                // default: { // 提取业务公公代码
+                //     chunks: 'initial',
+                //     minChunks: 2,
+                //     priority: -20,
+                //     minSize: 30,
+                //     name: 'common'
+                // }
             }
         },
         minimizer: [
@@ -130,7 +131,9 @@ module.exports = {
                 test: /\.(css|less|scss)$/,
                 use: [
                     MiniCssExtractPlugin.loader, // 必须放在上面用于解析字体或less
-                    'css-loader',
+                    {
+                        loader: 'css-loader'
+                    },
                     {
                         loader: 'px2rem-loader', // 此loader不能放在最后
                         options: {
@@ -154,7 +157,12 @@ module.exports = {
             {
                 test: /.(png|jpg|gif|jpeg)$/,
                 use: [
-                    'file-loader',
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: 'static/assets/img/[name]_[hash:8].[ext]'
+                        }
+                    },
                     {
                         loader: 'image-webpack-loader',
                         options: {
@@ -187,7 +195,7 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '[name]_[hash:8].[ext]'
+                            name: 'static/assets/fonts/[name]_[hash:8].[ext]'
                         }
                     }
                 ]
@@ -198,7 +206,7 @@ module.exports = {
         new VueLoaderPlugin(), // vue加载需要此插件
         new CleanWebpackPlugin(), // 删除dist
         new MiniCssExtractPlugin({ // 提取css为单独文件
-            filename: '[name]_[contenthash:8].css'
+            filename: 'static/css/[name]_[contenthash:8].css'
         }),
         new OptimizeCssAssetsWebpackPlugin({ // 压缩css
             assetNameRegExp: /\.css$/g,

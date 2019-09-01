@@ -59,7 +59,6 @@
 
 <script>
 import { Button } from "element-ui";
-console.log(Button);
 import "./assets/css/index.css";
 import { formate, getData } from "../utils/utils.js";
 import Home from "./home.vue";

@@ -2,7 +2,7 @@ const fs = require('fs')
 const cwd = process.cwd()
 
 class DllManifestList {
-    apply (compiler) {
+    apply(compiler) {
         compiler.plugin('emit', function (compilation, next) {
             const assets = Object.keys(compilation.assets)
             const assetsList = {}
@@ -20,14 +20,16 @@ class DllManifestList {
     }
 }
 class DllManifestScript {
-    apply (compiler) {
+    apply(compiler) {
         compiler.plugin('emit', function (compilation, next) {
+            const { outputPath } = compiler
             const manifestList = require(`${cwd}/build/manifest.list.json`)
             for (const [key, value] of Object.entries(compilation.assets)) {
                 if (/\.html/.test(key)) {
                     const data = value.source()
                     value.source = () => {
                         return data.replace(/(<script\s+src=".*?)\{\{(.*?)\}\}(")/g, (a, b, c, d) => {
+                            console.log(b, c, d)
                             return `${b}${manifestList[c]}${d}`
                         })
                     }
@@ -38,12 +40,12 @@ class DllManifestScript {
     }
 }
 class DllManifestScriptCopy {
-    apply (compiler) {
+    apply(compiler) {
         compiler.plugin('done', function (compilation) {
             const { outputPath } = compiler
             const manifestList = require(`${cwd}/build/manifest.list.json`)
             for (const [key, file] of Object.entries(manifestList)) {
-                fs.copyFile(`${cwd}/build/library/${file}`, `${outputPath}/${file}`, error => {
+                fs.copyFile(`${cwd}/build/library/${file}`, `${outputPath}/static/js/${file}`, error => {
                     if (error) {
                         console.log(key, error)
                     }
