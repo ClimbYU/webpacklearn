@@ -26,6 +26,7 @@
       </template>
     </Test>
     <!-- <Home></Home> -->
+    <Button type="primary">按钮</Button>
   </div>
 </template>
 
@@ -57,13 +58,15 @@
 </style>
 
 <script>
+import { Button } from "element-ui";
+console.log(Button);
 import "./assets/css/index.css";
 import { formate, getData } from "../utils/utils.js";
 import Home from "./home.vue";
 import Test from "./components/test/index.vue";
 export default {
   name: "Hello",
-  components: { Home, Test },
+  components: { Home, Test, Button },
   data() {
     return {
       name: "Vue",
