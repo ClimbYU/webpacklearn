@@ -1,5 +1,5 @@
 <template>
-  <div id="root" class="container-content">
+  <div class="container-content">
     <!-- Hello {{name}}
     <div class="image"></div>
     <div class="box" @click="importComponent"></div>-->
@@ -53,12 +53,11 @@
 import { Button } from "element-ui";
 import "./assets/css/index.css";
 import { formate, getData } from "../utils/utils.js";
-import Home from "./home.vue";
 import Test from "./components/test/index.vue";
 import Table from "./components/table/index.vue";
 export default {
   name: "Hello",
-  components: { Home, Test, Button, Table },
+  components: { Test, Button, Table },
   data() {
     return {
       name: "Vue",
@@ -127,12 +126,6 @@ export default {
     };
   },
   methods: {
-    importComponent() {
-      import("./home.vue").then(home => {
-        console.log(home);
-        this.home = home.default;
-      });
-    },
     handleFocus(e) {
       console.log("handleFocus", e);
     },

@@ -1,8 +1,12 @@
 import Vue from 'vue'
-import Hello from './helloWorld.vue'
-import formate from '../utils/utils.js'
+import router from './router/index.js'
 // import 'babel-polyfill'
-console.log(formate)
 new Vue({
-    render: h => h(Hello)
+  router,
+  render() {
+    return (
+      <router-view></router-view>
+    )
+  }
 }).$mount('#root')
+

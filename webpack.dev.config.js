@@ -8,6 +8,7 @@ var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 // var HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const { DllManifestScript, DllManifestScriptCopy } = require('./plugins/index')
 
 const setMPA = () => {
     const entries = {}
@@ -106,7 +107,10 @@ module.exports = {
         }),
         new webpack.HotModuleReplacementPlugin(),
         new FriendlyErrorsWebpackPlugin()
-    ].concat(htmlWebpackPlugins),
+    ].concat(htmlWebpackPlugins).concat([
+        new DllManifestScript(),
+        new DllManifestScriptCopy()] // 此插件需要放在htmlPlugin之后
+    ),
     devServer: {
         contentBase: './dist',
         hot: true

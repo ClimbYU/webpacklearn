@@ -145,9 +145,7 @@ module.exports = {
                         loader: 'postcss-loader',
                         options: {
                             plugins: () => [
-                                require('autoprefixer')({
-                                    browsers: ['last 2 version', '>1%', 'ios 7']
-                                })
+                                require('autoprefixer')()
                             ]
                         }
                     },

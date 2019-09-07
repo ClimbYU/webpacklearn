@@ -23,6 +23,7 @@ class DllManifestScript {
     apply(compiler) {
         compiler.plugin('emit', function (compilation, next) {
             const { outputPath } = compiler
+            console.log('outputPathoutputPathoutputPathoutputPath', outputPath)
             const manifestList = require(`${cwd}/build/manifest.list.json`)
             for (const [key, value] of Object.entries(compilation.assets)) {
                 if (/\.html/.test(key)) {
@@ -45,7 +46,7 @@ class DllManifestScriptCopy {
             const { outputPath } = compiler
             const manifestList = require(`${cwd}/build/manifest.list.json`)
             for (const [key, file] of Object.entries(manifestList)) {
-                fs.copyFile(`${cwd}/build/library/${file}`, `${outputPath}/static/js/${file}`, error => {
+                fs.copyFile(`${cwd}/build/library/${file}`, `${outputPath}/${file}`, error => {
                     if (error) {
                         console.log(key, error)
                     }
