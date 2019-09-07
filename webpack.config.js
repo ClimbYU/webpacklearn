@@ -104,7 +104,7 @@ module.exports = {
         mainFields: ['main']
 
     },
-    // stats: 'errors-only', // 减少控制台日志输出
+    stats: 'errors-only', // 减少控制台日志输出
     module: {
         rules: [
             {
@@ -218,7 +218,7 @@ module.exports = {
         //     loaders: ['babel-loader']
         // })
         new webpack.DllReferencePlugin({
-            manifest: require('./build/library/library.json')
+            manifest: require('./dll/library/library.json')
         })
     ].concat(htmlWebpackPlugins).concat([
         new DllManifestScript(),
