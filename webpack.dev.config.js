@@ -10,6 +10,12 @@ var OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const { DllManifestScript, DllManifestScriptCopy } = require('./plugins/index')
 
+
+const rules = require('./build/loader/index')
+const optimization = require('./build/optimize/index')
+const plugins = require('./build/plugin/index')
+const entry = require('./build/entry/index')
+
 const setMPA = () => {
     const entries = {}
     const htmlWebpackPlugins = []
@@ -47,10 +53,10 @@ const setMPA = () => {
 const { entries, htmlWebpackPlugins } = setMPA();
 
 module.exports = {
-    entry: entries,
+    entry: entry(),
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: '[name][hash:8].js'
+        filename: 'static/js/[name]_[hash:8].js',
     },
     mode: 'development',
     devtool: 'source-map',
@@ -59,58 +65,9 @@ module.exports = {
     },
     stats: 'errors-only', // 减少控制台日志输出
     module: {
-        rules: [
-            {
-                test: /\.js$/,
-                use: 'babel-loader'
-            },
-            {
-                test: /\.vue$/,
-                use: 'vue-loader',
-            },
-            {
-                test: /\.(css|less|scss)$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    // 'style-loader',
-                    'css-loader',
-                    'less-loader'
-                    // 'postcss-loader'
-                ]
-            },
-            {
-                test: /.(png|jpg|gif|jpeg)$/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 10240
-                        }
-                    }
-                ]
-            },
-            {
-                test: /.(woff|woff2|eot|ttf|otf)$/,
-                use: 'file-loader'
-            }
-        ]
+        rules: rules
     },
-    plugins: [
-        new VueLoaderPlugin(), // vue加载需要此插件
-        new CleanWebpackPlugin(),
-        new MiniCssExtractPlugin({
-            filename: '[name]_[contenthash:8].css'
-        }),
-        new OptimizeCssAssetsWebpackPlugin({ // 压缩css
-            assetNameRegExp: /\.css$/g,
-            cssProcessor: require('cssnano') // 使用cssnano压缩
-        }),
-        new webpack.HotModuleReplacementPlugin(),
-        new FriendlyErrorsWebpackPlugin()
-    ].concat(htmlWebpackPlugins).concat([
-        new DllManifestScript(),
-        new DllManifestScriptCopy()] // 此插件需要放在htmlPlugin之后
-    ),
+    plugins: plugins,
     devServer: {
         contentBase: './dist',
         hot: true

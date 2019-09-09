@@ -27,7 +27,6 @@ class DllManifestScript {
                     const data = value.source()
                     value.source = () => {
                         return data.replace(/(<script\s+src=".*?)\{\{(.*?)\}\}(")/g, (a, b, c, d) => {
-                            console.log(b, c, d)
                             return `${b}${manifestList[c]}${d}`
                         })
                     }
@@ -43,6 +42,7 @@ class DllManifestScriptCopy {
             const { outputPath } = compiler
             const manifestList = require(`${cwd}/dll/manifest.list.json`)
             for (const [key, file] of Object.entries(manifestList)) {
+                console.log(cwd, outputPath)
                 fs.copyFile(`${cwd}/dll/library/${file}`, `${outputPath}/static/js/${file}`, error => {
                     if (error) {
                         console.log(key, error)
