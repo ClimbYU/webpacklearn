@@ -42,7 +42,7 @@ class DllManifestScriptCopy {
             const { outputPath } = compiler
             const manifestList = require(`${cwd}/dll/manifest.list.json`)
             for (const [key, file] of Object.entries(manifestList)) {
-                console.log(cwd, outputPath)
+                // console.log(cwd, outputPath)
                 fs.copyFile(`${cwd}/dll/library/${file}`, `${outputPath}/static/js/${file}`, error => {
                     if (error) {
                         console.log(key, error)

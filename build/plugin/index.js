@@ -13,63 +13,61 @@ const glob = require('glob')
 var path = require('path')
 const { DllManifestScript, DllManifestScriptCopy } = require('../../plugins/index')
 
+function getHtmlPlugin () {
+    const htmlWebpackPlugins = []
 
-function getHtmlPlugin() {
-  const htmlWebpackPlugins = []
+    const entriesFiles = glob.sync(path.resolve(__dirname, '../../src/*/index.js'))
+    Object.keys(entriesFiles)
+        .map((index) => {
+            const entryFile = entriesFiles[index]
+            const match = entryFile.match(/src\/(.*)\/index\.js/)
+            const pageName = match && match[1]
 
-  const entriesFiles = glob.sync(path.resolve(__dirname, '../../src/*/index.js'))
-  console.log(entriesFiles, path.resolve(__dirname, '../../src/*/index.js'))
-  Object.keys(entriesFiles)
-    .map((index) => {
-      const entryFile = entriesFiles[index]
-      const match = entryFile.match(/src\/(.*)\/index\.js/)
-      const pageName = match && match[1]
-
-      htmlWebpackPlugins.push(
-        new HtmlWebpackPlugin({
-          template: path.join(__dirname, `../../src/${pageName}/index.html`),
-          filename: `${pageName}.html`,
-          chunks: ['common', pageName, 'vendors'], // 设置插入入口js以及第三方包和公共业务代码
-          inject: true,
-          minify: {
-            html5: true,
-            collapseWhitespace: true,
-            preserveLineBreaks: false,
-            minifyCSS: true,
-            minifyJS: true,
-            removeComments: false
-          }
+            htmlWebpackPlugins.push(
+                new HtmlWebpackPlugin({
+                    template: path.join(__dirname, `../../src/${pageName}/index.html`),
+                    filename: `${pageName}.html`,
+                    chunks: ['common', pageName, 'vendors'], // 设置插入入口js以及第三方包和公共业务代码
+                    inject: true,
+                    minify: {
+                        html5: true,
+                        collapseWhitespace: true,
+                        preserveLineBreaks: false,
+                        minifyCSS: true,
+                        minifyJS: true,
+                        removeComments: false
+                    }
+                })
+            )
         })
-      )
-    })
 
-  return htmlWebpackPlugins
+    return htmlWebpackPlugins
 }
 
 const htmlWebpackPlugins = getHtmlPlugin()
 var plugins = [
-  new VueLoaderPlugin(), // vue加载需要此插件
-  new CleanWebpackPlugin(), // 删除dist
-  new MiniCssExtractPlugin({ // 提取css为单独文件
-    filename: 'static/css/[name]_[contenthash:8].css'
-  }),
-  new OptimizeCssAssetsWebpackPlugin({ // 压缩css
-    assetNameRegExp: /\.css$/g,
-    cssProcessor: require('cssnano') // 使用cssnano压缩
-  }),
-  // new FriendlyErrorsWebpackPlugin(),
-  // new HardSourceWebpackPlugin()
-  // new BundleAnalyzerPlugin(),
-  // new HappyPack({
-  //     // 3) re-add the loaders you replaced above in #1:
-  //     loaders: ['babel-loader']
-  // })
-  new webpack.DllReferencePlugin({
-    manifest: require('../../dll/library/library.json')
-  })
+    new VueLoaderPlugin(), // vue加载需要此插件
+    new CleanWebpackPlugin(), // 删除dist
+    new MiniCssExtractPlugin({ // 提取css为单独文件
+        filename: 'static/css/[name]_[contenthash:8].css'
+    }),
+    new OptimizeCssAssetsWebpackPlugin({ // 压缩css
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: require('cssnano') // 使用cssnano压缩
+    }),
+    // new FriendlyErrorsWebpackPlugin(),
+    // new HardSourceWebpackPlugin()
+    // new BundleAnalyzerPlugin(),
+    // new HappyPack({
+    //     // 3) re-add the loaders you replaced above in #1:
+    //     loaders: ['babel-loader']
+    // })
+    new webpack.DllReferencePlugin({
+        manifest: require('../../dll/library/library.json')
+    })
 ].concat(htmlWebpackPlugins).concat([
-  new DllManifestScript(),
-  new DllManifestScriptCopy()] // 此插件需要放在htmlPlugin之后
+    new DllManifestScript(),
+    new DllManifestScriptCopy()] // 此插件需要放在htmlPlugin之后
 )
 
 module.exports = plugins
