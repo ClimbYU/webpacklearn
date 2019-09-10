@@ -8,7 +8,7 @@
     "watch": "webpack --watch",
     "build": "webpack --config webpack.config.js",
     "build:stats": "webpack --config webpack.config.js --json > stats.json",
-    "dev": "npm run dll && webpack-dev-server --config webpack.dev.config.js --open",
+    "dev": "npm run dll && webpack-dev-server --config webpack.dev.config.js",
     "dll": "webpack --config webpack.dll.js",
     "build:prod": "webpack --config webpack.dll.js && npm run build"
   },

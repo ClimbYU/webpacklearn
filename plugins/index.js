@@ -1,5 +1,32 @@
 const fs = require('fs')
 const cwd = process.cwd()
+const path = require('path')
+
+
+function getFile() {
+    return new Promise((resolve, reject) => {
+        fs.readdir(path.resolve(__dirname, '../dll/library'), function (err, file) {
+            if (!err) {
+                resolve(file)
+            }
+            reject()
+        })
+    })
+}
+async function getFileMap() {
+    const jsFile = []
+    const jsonFile = []
+    const file = await getFile()
+    file.map(item => {
+        if (/.js$/.test(item)) {
+            jsFile.push(item)
+        } else {
+            jsonFile.push(item)
+        }
+    })
+    return { jsFile, jsonFile }
+}
+
 
 class DllManifestList {
     apply(compiler) {
@@ -25,11 +52,17 @@ class DllManifestScript {
             for (const [key, value] of Object.entries(compilation.assets)) {
                 if (/\.html/.test(key)) {
                     const data = value.source()
-                    value.source = () => {
-                        return data.replace(/(<script\s+src=".*?)\{\{(.*?)\}\}(")/g, (a, b, c, d) => {
-                            return `${b}${manifestList[c]}${d}`
-                        })
-                    }
+                    const { jsFile } = getFileMap()
+                    console.log('jsFilejsFilejsFile', jsFile)
+
+                    let scriptList = jsFile.map(item => `<script src='${item}'></script>\n`)
+                    // scriptList = scriptList.join("")
+                    // value.source = () => {
+                    //     // return data.replace(/(<script\s+src=".*?)\{\{(.*?)\}\}(")/g, (a, b, c, d) => {
+                    //     //     return `${b}${manifestList[c]}${d}`
+                    //     // })
+                    //     return data.replace(/(<script\s+src=(")static\/js\/\{\{library\}\}("))/g, scriptList)
+                    // }
                 }
             }
             next()
