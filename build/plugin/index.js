@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // 包体积图
 // const HappyPack = require('happypack') // 开启多线程打包
 // const HardSourceWebpackPlugin = require('hard-source-webpack-plugin') // 开启缓存提升打包速度
@@ -13,7 +14,7 @@ const glob = require('glob')
 var path = require('path')
 const { DllManifestScript, DllManifestScriptCopy } = require('../../plugins/index')
 
-function getHtmlPlugin () {
+function getHtmlPlugin() {
     const htmlWebpackPlugins = []
 
     const entriesFiles = glob.sync(path.resolve(__dirname, '../../src/*/index.js'))
@@ -64,10 +65,16 @@ var plugins = [
     // })
     new webpack.DllReferencePlugin({
         manifest: require('../../dll/library/library.json')
-    })
+    }),
+    new CopyPlugin([{
+        from: path.resolve(__dirname, '../../dll/library'),
+        to: path.resolve(__dirname, '../../dist/static/js'),
+        ignore: ['*.json']
+    }])
 ].concat(htmlWebpackPlugins).concat([
-    new DllManifestScript(),
-    new DllManifestScriptCopy()] // 此插件需要放在htmlPlugin之后
+    new DllManifestScript()
+    // new DllManifestScriptCopy()
+] // 此插件需要放在htmlPlugin之后
 )
 
 module.exports = plugins
