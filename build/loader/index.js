@@ -52,7 +52,8 @@ var rules = [
       {
         loader: 'file-loader',
         options: {
-          name: 'static/assets/img/[name]_[hash:8].[ext]'
+          name: 'static/assets/img/[name]_[hash:8].[ext]',
+          publicPath: "/" // 解决background:url()路径错误问题
         }
       },
       {

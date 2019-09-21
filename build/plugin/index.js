@@ -50,7 +50,7 @@ var plugins = [
     new VueLoaderPlugin(), // vue加载需要此插件
     new CleanWebpackPlugin(), // 删除dist
     new MiniCssExtractPlugin({ // 提取css为单独文件
-        filename: 'static/css/[name]_[contenthash:8].css'
+        filename: 'static/css/[name]_[contenthash:8].css',
     }),
     new OptimizeCssAssetsWebpackPlugin({ // 压缩css
         assetNameRegExp: /\.css$/g,
