@@ -1,10 +1,12 @@
-var path = require("path")
-var webpack = require('webpack')
+const path = require("path")
+const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var MiniCssExtractPlugin = require("mini-css-extract-plugin")
-var OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const { cdn } = require('./env.js')
+const isDev = process.env.NODE_ENV === 'development' ? true : false
 
 module.exports = {
     entry: './src/index',
@@ -12,11 +14,15 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         filename: '[name]_[chunkhash:8].js'
     },
+    stats: {
+        assets: true,
+        modules: false,
+    },
     // watch: true,
     // watchOptions: {
 
     // },
-    mode: 'production',
+    // mode: 'production',
     module: {
         rules: [
             {
@@ -30,26 +36,19 @@ module.exports = {
             {
                 test: /\.(css|less|scss)$/,
                 use: [
-                    MiniCssExtractPlugin.loader,// 必须放在上面用于解析字体或less
-                    'css-loader',
                     {
-                        loader: 'px2rem-loader', // 此loader不能放在最后
-                        options: {
-                            remUnit: 75,// 1rem = 75px;
-                            remPrecision: 8// px 转换为rem后小数点的位数
+                        loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+                        options: isDev ? {} : {
+                            publicPath: cdn ? cdn : '../'
                         }
-                    },
+                    },// 必须放在上面用于解析字体或less
+                    { loader: 'css-loader' },
                     {
                         loader: 'postcss-loader',
-                        options: {
-                            plugins: () => [
-                                require('autoprefixer')({
-                                    browsers: ['last 2 version', '>1%', 'ios 7']
-                                })
-                            ]
-                        }
                     },
-                    'less-loader', // less-loader需放在postloader后面
+                    {
+                        loader: 'less-loader'
+                    }, // less-loader需放在postloader后面
                 ]
             },
             {
