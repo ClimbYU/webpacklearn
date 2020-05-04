@@ -55,13 +55,28 @@ module.exports = {
                 test: /.(png|jpg|gif|jpeg)$/,
                 use: [
                     {
-                        // loader: 'url-loader',
-                        // options: {
-                        //     limit: 10240
-                        // }
-                        loader: 'file-loader',
+                        loader: 'url-loader',
                         options: {
-                            name: '[name]_[hash:8].[ext]'
+                            limit: 1024 * 10
+                        }
+                    },
+                    {
+                        loader: 'image-webpack-loader',
+                        options: {
+                            pngquant: {
+                                quality: [0.65, 0.90],
+                                speed: 4
+                            },
+                            optipng: {
+                                enabled: true
+                            },
+                            mozjpeg: {
+                                progressive: true,
+                                quality: [65, 95]
+                            },
+                            gifsicle: {
+                                interlaced: false
+                            }
                         }
                     }
                 ]
