@@ -1,4 +1,5 @@
 const path = require("path")
+const { readdir } = require('fs')
 const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -7,6 +8,34 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 const { cdn } = require('./env.js')
 const isDev = process.env.NODE_ENV === 'development' ? true : false
+
+const dllplugin = function () {
+    return new Promise((resolve) => {
+        const plugin = [];
+        const dllDir = path.resolve(__dirname, '.temp/dll');
+        path.readdir(dllDir, (error, files) => {
+            if (!error) {
+                files.map((file) => {
+                    if (/\.json$/.test(file)) {
+                        plugin.push(new DllReferencePlugin({
+                            manifest: `${dllDir}/${file}`
+                        }))
+                    }
+                })
+
+                resolve(plugin)
+            }
+        })
+    })
+}
+
+async function getDllPlugin() {
+    const plugins = await dllplugin();
+    console.log(plugins)
+    return plugins
+}
+
+console.log(11111, getDllPlugin())
 
 module.exports = {
     entry: './src/index',
@@ -116,7 +145,8 @@ module.exports = {
         }),
         new OptimizeCssAssetsWebpackPlugin({ // 压缩css
             assetNameRegExp: /\.css$/g,
-            cssProcessor: require('cssnano') // 使用cssnano压缩
-        })
+            // cssProcessor: require('cssnano') // 使用cssnano压缩
+        }),
+        ...getDllPlugin()
     ]
 }
