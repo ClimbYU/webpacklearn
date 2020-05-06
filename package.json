@@ -8,6 +8,7 @@
     "watch": "webpack --watch",
     "build": "webpack --config webpack.config.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js",
+    "debug": "node --inspect node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.config.js",
     "dll": "webpack --config webpack.dll.config.js"
   },
   "repository": {
