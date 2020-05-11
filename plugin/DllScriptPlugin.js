@@ -18,7 +18,7 @@ function getJsFile() {
 
 class DllScriptPlugin {
   apply(compiler) {
-    compiler.hooks.emit.tap('dllinsert', async compilation => {
+    compiler.hooks.emit.tapAsync('dllinsert', async (compilation, callback) => {
       const files = await getJsFile();
       const { assets } = compilation;
       files.map(file => {
@@ -30,14 +30,12 @@ class DllScriptPlugin {
               value.source = () => {
                 return assetValue.replace(/<!--{{dll}}-->/g, `<script src="${cdn}/js/${file}"></script>`)
               }
-
-              console.log(value.source())
             }
           }
         }
       })
 
-
+      callback()
     })
   }
 }
