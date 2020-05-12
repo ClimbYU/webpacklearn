@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin');
 const DllScriptPlugin = require('./plugin/DllScriptPlugin.js')
 const { cdn } = require('./env.js')
 const isDev = process.env.NODE_ENV === 'development' ? true : false
@@ -36,7 +37,8 @@ async function getConfig() {
         entry: './src/index',
         output: {
             path: path.join(__dirname, 'dist'),
-            filename: '[name]_[chunkhash:8].js'
+            filename: 'js/[name]_[chunkhash:8].js',
+            publicPath:cdn
         },
         stats: {
             assets: true,
@@ -142,8 +144,16 @@ async function getConfig() {
                 assetNameRegExp: /\.css$/g,
                 // cssProcessor: require('cssnano') // 使用cssnano压缩
             }),
-            new DllScriptPlugin(),
             ...plugins,
+            new DllScriptPlugin(),
+            new CopyPlugin([ //用于将dll包拷贝至dev-sever
+                {
+                  from: '.temp/dll/*.js',
+                  to: 'js/[name].[ext]',
+                  toType: 'template',
+                  ignore: ['index.html']
+                }
+              ])
         ]
     }
 
