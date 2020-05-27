@@ -1,6 +1,6 @@
 <template>
   <div id="root" class="container-content">
-    Hello {{name}}
+    Hello {{name}} zhue
         <div class="image"></div>
     <div class="box"></div>
     <div class="image-1"></div>
@@ -18,7 +18,7 @@
     display: flex;
     color: #1717cf;
     font-size: 30px;
-    font-family: "SourceHanSerifSC-Heavy";
+    // font-family: "SourceHanSerifSC-Heavy";
     .image {
       background-image: url(./assets/images/test4.png);
       background-repeat: no-repeat;
@@ -47,7 +47,7 @@
 </style>
 
 <script>
-import "./assets/css/index.css";
+// import "./assets/css/index.css";
 import Index from './index/index.vue'
 export default {
   name: "Hello",

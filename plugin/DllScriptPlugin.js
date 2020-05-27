@@ -23,7 +23,6 @@ class DllScriptPlugin {
       const { assets } = compilation;
       files.map(file => {
         if (/\.js$/.test(file)) {
-
           for (const [key, value] of Object.entries(assets)) {
             if (/\.html$/.test(key)) {
               const assetValue = value.source();

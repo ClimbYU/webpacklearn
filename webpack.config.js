@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const DllScriptPlugin = require('./plugin/DllScriptPlugin.js')
 const { cdn } = require('./env.js')
 const isDev = process.env.NODE_ENV === 'development' ? true : false
@@ -34,21 +35,48 @@ const dllplugin = function () {
 async function getConfig() {
     const plugins = await dllplugin();
     const config = {
+        mode: isDev ? 'development' : 'production',
+        devtool: 'none',
         entry: './src/index',
         output: {
             path: path.join(__dirname, 'dist'),
-            filename: 'js/[name]_[chunkhash:8].js',
-            publicPath:cdn
+            filename: 'js/[name]_[hash:8].js',
+            publicPath: '/static/'
         },
         stats: {
             assets: true,
             modules: false,
         },
-        // watch: true,
-        // watchOptions: {
+        devServer: {
+            hot: true,
+            // https: true,
+            // port: 80,
+            // allowedHosts: ['test.yumengkang.com'],
+            disableHostCheck: true, //设置之后可以访问allowHosts内的域名
+            clientLogLevel: 'error',
+            compress: !isDev,
+            // contentBase: './public',
+            // publicPath: '/static/'
+        },
+        cache: true,
+        watchOptions: {
 
-        // },
-        // mode: 'production',
+        },
+        performance: {
+            hints: 'error',
+            maxAssetSize: 1024 * 1024 * 2 * 10, // 限制文件大小
+            maxEntrypointSize: 1024 * (isDev ? 1024 : 400) * 10, // 限制入口文件大小
+            assetFilter: fileName => !/\.(mp3|mp4|ogg|wav|map|ttf|woff2?|eot)$/.test(fileName)
+        },
+        optimization: {
+            minimizer: [
+                new TerserPlugin({
+                    cache: true,
+                    parallel: true,
+                    sourceMap: true
+                })
+            ]
+        },
         module: {
             rules: [
                 {
@@ -122,7 +150,7 @@ async function getConfig() {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                template: path.resolve(__dirname, 'src/index.html'),
+                template: path.resolve(__dirname, 'public/index.html'),
                 filename: 'index.html',
                 // chunks: ['main'], // 可以指定使用哪些chunk
                 inject: true,
@@ -148,12 +176,12 @@ async function getConfig() {
             new DllScriptPlugin(),
             new CopyPlugin([ //用于将dll包拷贝至dev-sever
                 {
-                  from: '.temp/dll/*.js',
-                  to: 'js/[name].[ext]',
-                  toType: 'template',
-                  ignore: ['index.html']
+                    from: '.temp/dll/*.js',
+                    to: 'js/[name].[ext]',
+                    // toType: 'template',
+                    // ignore: ['index.html']
                 }
-              ])
+            ])
         ]
     }
 
