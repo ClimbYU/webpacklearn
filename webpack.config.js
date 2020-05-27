@@ -59,9 +59,6 @@ async function getConfig() {
             // publicPath: '/static/'
         },
         cache: true,
-        watchOptions: {
-
-        },
         performance: {
             hints: 'error',
             maxAssetSize: 1024 * 1024 * 2 * 10, // 限制文件大小
