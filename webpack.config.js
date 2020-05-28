@@ -41,7 +41,7 @@ async function getConfig() {
         output: {
             path: path.join(__dirname, 'dist'),
             filename: 'js/[name]_[hash:8].js',
-            publicPath: '/static/'
+            publicPath: cdn
         },
         stats: {
             assets: true,
@@ -108,7 +108,8 @@ async function getConfig() {
                         {
                             loader: 'url-loader',
                             options: {
-                                limit: 1024 * 10
+                                limit: 1024 * 10,
+                                name: !isDev ? 'images/[contenthash:8].[ext]' : 'images/[name].[contenthash:8].[ext]',
                             }
                         },
                         {
@@ -138,7 +139,7 @@ async function getConfig() {
                         {
                             loader: 'file-loader',
                             options: {
-                                name: '[name]_[hash:8].[ext]'
+                                name: 'fonts/[name]_[hash:8].[ext]'
                             }
                         }
                     ],
@@ -162,8 +163,8 @@ async function getConfig() {
             }),
             new VueLoaderPlugin(), // vue加载需要此插件
             new CleanWebpackPlugin(), // 删除dist
-            new MiniCssExtractPlugin({ // 提取css为单独文件
-                filename: '[name]_[contenthash:8].css'
+            !isDev && new MiniCssExtractPlugin({ // 提取css为单独文件
+                filename: '[name].[contenthash:8].css'
             }),
             new OptimizeCssAssetsWebpackPlugin({ // 压缩css
                 assetNameRegExp: /\.css$/g,
@@ -179,7 +180,7 @@ async function getConfig() {
                     // ignore: ['index.html']
                 }
             ])
-        ]
+        ].filter(item => item)// 适配判断有些插件需要判断环境才可使用的问题
     }
 
     return config;
