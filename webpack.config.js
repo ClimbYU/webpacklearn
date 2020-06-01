@@ -9,7 +9,12 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const DllScriptPlugin = require('./plugin/DllScriptPlugin.js')
-const { cdn } = require('./env.js')
+const { cdn,
+    baseInclude,
+    cssInclude,
+    imageInclude,
+    jsInclude,
+    vueInclude } = require('./env.js')
 const isDev = process.env.NODE_ENV === 'development' ? true : false
 
 const dllplugin = function () {
@@ -78,14 +83,17 @@ async function getConfig() {
             rules: [
                 {
                     test: /\.js$/,
+                    include: jsInclude,
                     use: 'babel-loader'
                 },
                 {
                     test: /\.vue$/,
+                    include: vueInclude,
                     use: 'vue-loader',
                 },
                 {
                     test: /\.(css|less|scss)$/,
+                    include: cssInclude,
                     use: [
                         {
                             loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
@@ -94,16 +102,13 @@ async function getConfig() {
                             }
                         },// 必须放在上面用于解析字体或less
                         { loader: 'css-loader' },
-                        {
-                            loader: 'postcss-loader',
-                        },
-                        {
-                            loader: 'less-loader'
-                        }, // less-loader需放在postloader后面
+                        { loader: 'postcss-loader' },
+                        { loader: 'less-loader' }, // less-loader需放在postloader后面
                     ]
                 },
                 {
                     test: /.(png|jpg|gif|jpeg)$/,
+                    include: imageInclude,
                     use: [
                         {
                             loader: 'url-loader',
