@@ -30,3 +30,15 @@
       }
     }
 </style>
+<script>
+import {Select} from './components/index.vue'
+export default{
+  data(){
+    return {}
+  },
+  components:{
+    Select
+  }
+}
+
+</script>

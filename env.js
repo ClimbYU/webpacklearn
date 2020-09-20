@@ -1,6 +1,6 @@
 const { resolve } = require('path');
 const cdn = ''
-const baseInclude = [resolve('./src/')];
+const baseInclude = [resolve('./src/'), resolve('./.temp/')];
 const cssInclude = [...baseInclude];
 const imageInclude = [...baseInclude];
 const jsInclude = [...baseInclude];

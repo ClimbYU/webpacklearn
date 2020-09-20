@@ -1,8 +1,6 @@
-const env = process.env;
 export default {
   data() {
     return {
-      NODE_ENV: env.NODE_ENV,
       startY: '',
       endY: '',
       scrollLocation: 0,

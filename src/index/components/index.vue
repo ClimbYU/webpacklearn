@@ -8,7 +8,6 @@
         <div>请选择</div>
         <div>确定</div>
       </div>
-      {{selectedIndex}}
       <div @touchstart="selectStart" @touchmove="selectMove" @touchend="selectEnd"
         class="content-box display-flex flex-row-center">
         <div class="content-box-top"></div>
